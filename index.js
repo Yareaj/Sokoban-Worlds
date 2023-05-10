@@ -2,7 +2,7 @@
 let levelMap, playerQuad;
 
 // Definition of asset objects
-let images;
+let images, sounds;
 const playerPos = { row: 2, col: 2 };
 
 // Game board size
@@ -27,6 +27,11 @@ function preload() {
             left: loadImage('./assets/player/facingLeft.png'),
             right: loadImage('./assets/player/facingRight.png')
         }
+    }
+    sounds = {
+        step: loadSound('./assets/sounds/step.wav'),
+        success: loadSound('./assets/sounds/success.wav'),
+        forbidden: loadSound('./assets/sounds/forbidden.wav')
     }
 }
 
@@ -68,27 +73,42 @@ function keyPressed() {
     if (keyCode === UP_ARROW || key === 'w') {
         playerQuad._memory2D[0][0] = images.player.up;
 
-        if (!wallAhead(playerPos.row, playerPos.col, 'up')) {
-            playerPos.row -= 1;
-        }        
+        if (wallAhead(playerPos.row, playerPos.col, 'up')) {
+            return sounds.forbidden.play();
+        }   
+        
+        playerPos.row -= 1;
+        sounds.step.play();
+
     } else if (keyCode === DOWN_ARROW || key === 's') {
         playerQuad._memory2D[0][0] = images.player.down;
 
-        if (!wallAhead(playerPos.row, playerPos.col, 'down')) {
-            playerPos.row += 1;
+        if (wallAhead(playerPos.row, playerPos.col, 'down')) {
+            return sounds.forbidden.play();
         } 
+
+        playerPos.row += 1;
+        sounds.step.play();
+
     } else if (keyCode === LEFT_ARROW || key === 'a') {
         playerQuad._memory2D[0][0] = images.player.left;
         
-        if (!wallAhead(playerPos.row, playerPos.col, 'left')) {
-            playerPos.col -= 1;
+        if (wallAhead(playerPos.row, playerPos.col, 'left')) {
+            return sounds.forbidden.play();
         }
+        
+        playerPos.col -= 1;
+        sounds.step.play();
+
     } else if (keyCode === RIGHT_ARROW || key === 'd') {
         playerQuad._memory2D[0][0] = images.player.right;
 
-        if (!wallAhead(playerPos.row, playerPos.col, 'right')) {
-            playerPos.col += 1;
+        if (wallAhead(playerPos.row, playerPos.col, 'right')) {
+            return sounds.forbidden.play();
         }
+
+        playerPos.col += 1;
+        sounds.step.play();
     } 
 }
 
