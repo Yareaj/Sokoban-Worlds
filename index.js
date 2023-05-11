@@ -4,12 +4,9 @@ const columns = 10, rows = 10;
 // Definition of asset objects
 let images, sounds;
 
-// Creation of box(es) storage array
+// Creation of box+targets storage array
 const boxesQuadrilles = [];
-
-// Creation of the targets array
 const targetQuadrilles = [];
-
 const renderBlocks = [ targetQuadrilles, boxesQuadrilles  ];
 
 // Definition of quadrilles for scope to reach all functions
@@ -97,84 +94,13 @@ function draw() {
 // Actions based upon the key pressed
 function keyPressed() {
     if (keyCode === UP_ARROW || key === 'w') {
-        playerQuad._memory2D[0][0] = images.player.up;
-
-        if (objectAhead(playerPos.row, playerPos.col, 'up', 'wall')[0]) {
-            return sounds.forbidden.play();
-        }
-
-        const isBox = objectAhead(playerPos.row, playerPos.col, 'up', 'box');
-        if (isBox[0]) {
-            if (isThereBlockInterference(isBox[1], 'up')) {
-                return sounds.forbidden.play();
-            } else {
-                moveBox(isBox[1], 'up');
-                playerPos.row -= 1;
-                return sounds.step.play();
-            }
-        }
-        playerPos.row -= 1;
-        sounds.step.play();
-
+        playerMove('up');
     } else if (keyCode === DOWN_ARROW || key === 's') {
-        playerQuad._memory2D[0][0] = images.player.down;
-
-        if (objectAhead(playerPos.row, playerPos.col, 'down', 'wall')[0]) {
-            return sounds.forbidden.play();
-        }
-
-        const isBox = objectAhead(playerPos.row, playerPos.col, 'down', 'box');
-        if (isBox[0]) {
-            if (isThereBlockInterference(isBox[1], 'down')) {
-                return sounds.forbidden.play();
-            } else {
-                moveBox(isBox[1], 'down');
-                playerPos.row += 1;
-                return sounds.step.play();
-            }
-        }
-        playerPos.row += 1;
-        sounds.step.play();
-
+        playerMove('down');
     } else if (keyCode === LEFT_ARROW || key === 'a') {
-        playerQuad._memory2D[0][0] = images.player.left;
-        
-        if (objectAhead(playerPos.row, playerPos.col, 'left', 'wall')[0]) {
-            return sounds.forbidden.play();
-        }
-
-        const isBox = objectAhead(playerPos.row, playerPos.col, 'left', 'box');
-        if (isBox[0]) {
-            if (isThereBlockInterference(isBox[1], 'left')) {
-                return sounds.forbidden.play();
-            } else {
-                moveBox(isBox[1], 'left');
-                playerPos.col -= 1;
-                return sounds.step.play();
-            }
-        }
-        playerPos.col -= 1;
-        sounds.step.play();
-
+        playerMove('left');
     } else if (keyCode === RIGHT_ARROW || key === 'd') {
-        playerQuad._memory2D[0][0] = images.player.right;
-
-        if (objectAhead(playerPos.row, playerPos.col, 'right', 'wall')[0]) {
-            return sounds.forbidden.play();
-        }
-
-        const isBox = objectAhead(playerPos.row, playerPos.col, 'right', 'box');
-        if (isBox[0]) {
-            if (isThereBlockInterference(isBox[1], 'right')) {
-                return sounds.forbidden.play();
-            } else {
-                moveBox(isBox[1], 'right');
-                playerPos.col += 1;
-                return sounds.step.play();
-            }
-        }
-        playerPos.col += 1;
-        sounds.step.play();
+        playerMove('right');
     }
 }
 
@@ -233,4 +159,46 @@ function moveBox(boxIndex, direction) {
     const boxDestinyCell = [ dirInstructions[direction].rowFinalCord, dirInstructions[direction].colFinalCord ];
 
     boxesQuadrilles[boxIndex][1] = [ boxDestinyCell[1], boxDestinyCell[0] ];
+}
+
+// Function to store recurrent movements to place within the keyPressed() function
+function playerMove(direction) {
+    playerQuad._memory2D[0][0] = images.player[direction];
+
+    if (objectAhead(playerPos.row, playerPos.col, direction, 'wall')[0]) {
+        return sounds.forbidden.play();
+    }
+
+    const isBox = objectAhead(playerPos.row, playerPos.col, direction, 'box');
+    if (isBox[0]) {
+        if (isThereBlockInterference(isBox[1], direction)) {
+            return sounds.forbidden.play();
+        } else {
+            moveBox(isBox[1], direction);
+            
+            if (direction == 'up') { 
+                playerPos.row -= 1;
+            } else if (direction == 'down') {
+                playerPos.row += 1;
+            } else if (direction == 'left') {
+                playerPos.col -= 1;
+            } else if (direction == 'right') {
+                playerPos.col += 1;
+            }
+
+            return sounds.step.play();
+        }
+    }
+    
+    if (direction == 'up') { 
+        playerPos.row -= 1;
+    } else if (direction == 'down') {
+        playerPos.row += 1;
+    } else if (direction == 'left') {
+        playerPos.col -= 1;
+    } else if (direction == 'right') {
+        playerPos.col += 1;
+    }
+
+    sounds.step.play();    
 }
