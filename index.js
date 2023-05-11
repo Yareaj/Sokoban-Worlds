@@ -28,7 +28,6 @@ function preload() {
             box: loadImage('./assets/blocks/box.png'),
             boxTarget: loadImage('./assets/blocks/boxTarget.png'),
             boxSecured: loadImage('./assets/blocks/boxSecured.png'),
-            grayFloor: loadImage('./assets/blocks/rockGrayPath.png'),
         },
         player: {
             up: loadImage('./assets/player/facingUp.png'),
