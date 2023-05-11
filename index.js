@@ -1,23 +1,29 @@
-// Definition of quadrilles for scope to reach all functions
-let levelMap, playerQuad;
-
-// Definition of asset objects
-let images, sounds;
-const playerPos = { row: 2, col: 2 };
-
 // Game board size
 const columns = 10, rows = 10;
 
-// Redefine global variables
+// Definition of asset objects
+let images, sounds;
+
+// Creation of box(es) storage array
+const boxesQuadrilles = [];
+let boxCords;
+
+// Definition of quadrilles for scope to reach all functions
+let levelMap, playerQuad;
+const playerPos = { row: 2, col: 2 };
+
+// Redefine global variables for customization
 Quadrille.CELL_LENGTH = 50;
 Quadrille.OUTLINE_WEIGHT = 0;
 
-// Load assets before the quadrille is rendered
+// Load assets before quadrilles initalization
 function preload() {
     images = {
         blocks: {
             wall: loadImage('./assets/blocks/redBrickWall.png'),
             box: loadImage('./assets/blocks/box.png'),
+            boxTarget: loadImage('./assets/blocks/boxTarget.png'),
+            boxSecured: loadImage('./assets/blocks/boxSecured.png'),
             grayFloor: loadImage('./assets/blocks/rockGrayPath.png'),
             grayDiamond: loadImage('./assets/blocks/grayDiamond.png')
         },
@@ -38,6 +44,7 @@ function preload() {
 function setup() {
     // Adjust the canvas to the board's exact measurements
     createCanvas(Quadrille.CELL_LENGTH * columns, Quadrille.CELL_LENGTH * rows);
+    background('#2f4f4f');
 
     // Define the level's map dimensions
     levelMap = createQuadrille(rows, columns);
@@ -51,10 +58,19 @@ function setup() {
             if (itRows == 0 || itRows == rows-1 || itColumns == 0 || itColumns == columns-1) {
                 levelMap._memory2D[itRows][itColumns] = images.blocks.wall;
             } else {
-                levelMap._memory2D[itRows][itColumns] = images.blocks.grayFloor;
+                levelMap._memory2D[itRows][itColumns] = color('#2f4f4f');
             }
         }
     }
+
+    /* boxesQuadrilles[0] = [5,6];
+    boxesQuadrilles[1] = [5,5];
+
+    for (let iterator=0; iterator<boxesQuadrilles.length; iterator++) {
+        boxesQuadrilles[iterator] = [ createQuadrille([ images.blocks.box ]), [ iterator+2, iterator+3 ] ];
+    } */
+
+    boxesQuadrilles[0] = [ createQuadrille([ images.blocks.box ]), [ 3, 2 ] ];
 }
 
 function draw() {
@@ -66,6 +82,13 @@ function draw() {
         y: playerPos.row * Quadrille.CELL_LENGTH,
         outline: 'green'
     });
+
+    for (let boxIterator=0; boxIterator<boxesQuadrilles.length; boxIterator++) {
+        drawQuadrille(boxesQuadrilles[boxIterator][0], {
+            x: boxesQuadrilles[boxIterator][1][0] * Quadrille.CELL_LENGTH,
+            y: boxesQuadrilles[boxIterator][1][1] * Quadrille.CELL_LENGTH,
+        });
+    }
 }
 
 // Actions based upon the key pressed
@@ -73,9 +96,14 @@ function keyPressed() {
     if (keyCode === UP_ARROW || key === 'w') {
         playerQuad._memory2D[0][0] = images.player.up;
 
-        if (wallAhead(playerPos.row, playerPos.col, 'up')) {
+        if (objectAhead(playerPos.row, playerPos.col, 'up', 'wall')[0]) {
             return sounds.forbidden.play();
-        }   
+        }
+
+        const isBox = objectAhead(playerPos.row, playerPos.col, 'up', 'box');
+        if (isBox[0]) {
+            moveBox(isBox[1], 'up');
+        }
         
         playerPos.row -= 1;
         sounds.step.play();
@@ -83,9 +111,14 @@ function keyPressed() {
     } else if (keyCode === DOWN_ARROW || key === 's') {
         playerQuad._memory2D[0][0] = images.player.down;
 
-        if (wallAhead(playerPos.row, playerPos.col, 'down')) {
+        if (objectAhead(playerPos.row, playerPos.col, 'down', 'wall')[0]) {
             return sounds.forbidden.play();
-        } 
+        }
+
+        const isBox = objectAhead(playerPos.row, playerPos.col, 'down', 'box');
+        if (isBox[0]) {
+            moveBox(isBox[1], 'down');
+        }
 
         playerPos.row += 1;
         sounds.step.play();
@@ -93,8 +126,13 @@ function keyPressed() {
     } else if (keyCode === LEFT_ARROW || key === 'a') {
         playerQuad._memory2D[0][0] = images.player.left;
         
-        if (wallAhead(playerPos.row, playerPos.col, 'left')) {
+        if (objectAhead(playerPos.row, playerPos.col, 'left', 'wall')[0]) {
             return sounds.forbidden.play();
+        }
+
+        const isBox = objectAhead(playerPos.row, playerPos.col, 'left', 'box');
+        if (isBox[0]) {
+            moveBox(isBox[1], 'left');
         }
         
         playerPos.col -= 1;
@@ -103,19 +141,26 @@ function keyPressed() {
     } else if (keyCode === RIGHT_ARROW || key === 'd') {
         playerQuad._memory2D[0][0] = images.player.right;
 
-        if (wallAhead(playerPos.row, playerPos.col, 'right')) {
+        if (objectAhead(playerPos.row, playerPos.col, 'right', 'wall')[0]) {
             return sounds.forbidden.play();
+        }
+
+        const isBox = objectAhead(playerPos.row, playerPos.col, 'right', 'box');
+        if (isBox[0]) {
+            moveBox(isBox[1], 'right');
         }
 
         playerPos.col += 1;
         sounds.step.play();
-    } 
+    }  else if (keyCode === ESCAPE) {
+        console.log(objectAhead(playerPos.row, playerPos.col, 'up', 'wall')[0])
+    }
 }
 
-// Function that given the player's position on the quadrille determines if next location is wall blocked
-function wallAhead(rowCord, colCord, direction) {
-    // Define the boolean to store wether or not the character will hit a wall
-    let isThereAWall = false;
+// Function that determines wether there is an object in the player's direction, if a box, returns the index within the quadrille array
+function objectAhead(rowCord, colCord, direction, objectToFind) {
+    // Define the boolean to store wether or not the character is going towards the object
+    let headingToObject = [ false, -1 ];
 
     // Object to define the final cell based on the direction
     const dirInstructions = {
@@ -127,10 +172,42 @@ function wallAhead(rowCord, colCord, direction) {
 
     // Define the coordinate the character will lead to
     const destinyCell = [ dirInstructions[direction].rowFinalCord, dirInstructions[direction].colFinalCord ];
-    
-    if (levelMap.read(destinyCell[0], destinyCell[1]) == images.blocks.wall) {
-        isThereAWall = true
+
+    // Determine action row based on what object is the target
+    if (objectToFind === 'wall') {
+        if (levelMap.read(destinyCell[0], destinyCell[1]) == images.blocks.wall) {
+            headingToObject[0] = true;
+        }
+    } else if (objectToFind === 'box') {
+        // We invert the destinyCell confirmation format since x=columns and y=rows
+        const foundBox = boxesQuadrilles.findIndex(boxData => boxData[1][0] == destinyCell[1] && boxData[1][1] == destinyCell[0]);
+
+        if (foundBox>=0) {
+            headingToObject = [ true, foundBox ];
+        }
     }
 
-    return isThereAWall;
+    return headingToObject;
+}
+
+// Function to move a box across the map
+function moveBox(boxIndex, direction) {
+    const boxCords = boxesQuadrilles[boxIndex][1];
+    
+    // Object to define the box's destiny cell based on the direction
+    const dirInstructions = {
+        'up': { rowFinalCord: boxCords[1]-1, colFinalCord: boxCords[0] },
+        'down': { rowFinalCord: boxCords[1]+1, colFinalCord: boxCords[0] },
+        'left': { rowFinalCord: boxCords[1], colFinalCord: boxCords[0]-1 },
+        'right': { rowFinalCord: boxCords[1], colFinalCord: boxCords[0]+1 }
+    }
+
+    // Define the coordinate the box shall move towards
+    const boxDestinyCell = [ dirInstructions[direction].rowFinalCord, dirInstructions[direction].colFinalCord ];
+
+    const interference = objectAhead(boxCords[0], boxCords[1], direction, 'box')[0] || objectAhead(boxCords[0], boxCords[1], direction, 'wall')[0];
+
+    if (!interference) {
+        boxesQuadrilles[boxIndex][1] = [ boxDestinyCell[1], boxDestinyCell[0] ];
+    }
 }
