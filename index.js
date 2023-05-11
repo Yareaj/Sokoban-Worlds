@@ -174,7 +174,11 @@ function playerMove(direction) {
         if (isThereBlockInterference(isBox[1], direction)) {
             return sounds.forbidden.play();
         } else {
+            // Move the box to the desired destiny
             moveBox(isBox[1], direction);
+
+            // Determine wether the box lands on a target
+            boxOnTarget(isBox[1]);
             
             if (direction == 'up') { 
                 playerPos.row -= 1;
@@ -201,4 +205,18 @@ function playerMove(direction) {
     }
 
     sounds.step.play();    
+}
+
+// Function to determine wether a box is over a target and update it's skin
+function boxOnTarget(boxIndex) {
+    const box = boxesQuadrilles[boxIndex];
+    
+    const foundTarget = targetQuadrilles.find(targetData => targetData[1][0] == box[1][0] && targetData[1][1] == box[1][1]);
+
+    if (foundTarget) {
+        box[0]._memory2D[0][0] = images.blocks.boxSecured;
+        sounds.success.play();
+    } else {
+        box[0]._memory2D[0][0] = images.blocks.box;
+    }
 }
