@@ -6,7 +6,11 @@ let images, sounds;
 
 // Creation of box(es) storage array
 const boxesQuadrilles = [];
-let boxCords;
+
+// Creation of the targets array
+const targetQuadrilles = [];
+
+const renderBlocks = [ targetQuadrilles, boxesQuadrilles  ];
 
 // Definition of quadrilles for scope to reach all functions
 let levelMap, playerQuad;
@@ -25,7 +29,6 @@ function preload() {
             boxTarget: loadImage('./assets/blocks/boxTarget.png'),
             boxSecured: loadImage('./assets/blocks/boxSecured.png'),
             grayFloor: loadImage('./assets/blocks/rockGrayPath.png'),
-            grayDiamond: loadImage('./assets/blocks/grayDiamond.png')
         },
         player: {
             up: loadImage('./assets/player/facingUp.png'),
@@ -63,19 +66,24 @@ function setup() {
         }
     }
 
-    /* boxesQuadrilles[0] = [5,6];
-    boxesQuadrilles[1] = [5,5];
-
-    for (let iterator=0; iterator<boxesQuadrilles.length; iterator++) {
-        boxesQuadrilles[iterator] = [ createQuadrille([ images.blocks.box ]), [ iterator+2, iterator+3 ] ];
-    } */
-
+    targetQuadrilles[0] = [ createQuadrille([ images.blocks.boxTarget ]), [ 6, 7 ]];
+    targetQuadrilles[1] = [ createQuadrille([ images.blocks.boxTarget ]), [ 3, 4 ]];
     boxesQuadrilles[0] = [ createQuadrille([ images.blocks.box ]), [ 3, 2 ] ];
     boxesQuadrilles[1] = [ createQuadrille([ images.blocks.box ]), [ 3, 5 ] ];
 }
 
 function draw() {
     drawQuadrille(levelMap);
+
+    // Render all targets first and then render their respective blocks, both stored in [renderBlocks]
+    for (let blockTypeIt=0; blockTypeIt<renderBlocks[0].length; blockTypeIt++) {
+        for (let indBlockIt=0; indBlockIt<renderBlocks.length; indBlockIt++) {
+            drawQuadrille(renderBlocks[blockTypeIt][indBlockIt][0], {
+                x: renderBlocks[blockTypeIt][indBlockIt][1][0] * Quadrille.CELL_LENGTH,
+                y: renderBlocks[blockTypeIt][indBlockIt][1][1] * Quadrille.CELL_LENGTH,
+            });
+        }
+    }
 
     // Insert the player onto the main quadrille given a specific position
     drawQuadrille(playerQuad, {
@@ -84,12 +92,6 @@ function draw() {
         outline: 'green'
     });
 
-    for (let boxIterator=0; boxIterator<boxesQuadrilles.length; boxIterator++) {
-        drawQuadrille(boxesQuadrilles[boxIterator][0], {
-            x: boxesQuadrilles[boxIterator][1][0] * Quadrille.CELL_LENGTH,
-            y: boxesQuadrilles[boxIterator][1][1] * Quadrille.CELL_LENGTH,
-        });
-    }
 }
 
 // Actions based upon the key pressed
@@ -173,8 +175,6 @@ function keyPressed() {
         }
         playerPos.col += 1;
         sounds.step.play();
-    }  else if (keyCode === ESCAPE) {
-        console.log(objectAhead(playerPos.row, playerPos.col, 'up', 'wall')[0])
     }
 }
 
