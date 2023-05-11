@@ -71,6 +71,7 @@ function setup() {
     } */
 
     boxesQuadrilles[0] = [ createQuadrille([ images.blocks.box ]), [ 3, 2 ] ];
+    boxesQuadrilles[1] = [ createQuadrille([ images.blocks.box ]), [ 3, 5 ] ];
 }
 
 function draw() {
@@ -102,9 +103,14 @@ function keyPressed() {
 
         const isBox = objectAhead(playerPos.row, playerPos.col, 'up', 'box');
         if (isBox[0]) {
-            moveBox(isBox[1], 'up');
+            if (isThereBlockInterference(isBox[1], 'up')) {
+                return sounds.forbidden.play();
+            } else {
+                moveBox(isBox[1], 'up');
+                playerPos.row -= 1;
+                return sounds.step.play();
+            }
         }
-        
         playerPos.row -= 1;
         sounds.step.play();
 
@@ -117,9 +123,14 @@ function keyPressed() {
 
         const isBox = objectAhead(playerPos.row, playerPos.col, 'down', 'box');
         if (isBox[0]) {
-            moveBox(isBox[1], 'down');
+            if (isThereBlockInterference(isBox[1], 'down')) {
+                return sounds.forbidden.play();
+            } else {
+                moveBox(isBox[1], 'down');
+                playerPos.row += 1;
+                return sounds.step.play();
+            }
         }
-
         playerPos.row += 1;
         sounds.step.play();
 
@@ -132,9 +143,14 @@ function keyPressed() {
 
         const isBox = objectAhead(playerPos.row, playerPos.col, 'left', 'box');
         if (isBox[0]) {
-            moveBox(isBox[1], 'left');
+            if (isThereBlockInterference(isBox[1], 'left')) {
+                return sounds.forbidden.play();
+            } else {
+                moveBox(isBox[1], 'left');
+                playerPos.col -= 1;
+                return sounds.step.play();
+            }
         }
-        
         playerPos.col -= 1;
         sounds.step.play();
 
@@ -147,9 +163,14 @@ function keyPressed() {
 
         const isBox = objectAhead(playerPos.row, playerPos.col, 'right', 'box');
         if (isBox[0]) {
-            moveBox(isBox[1], 'right');
+            if (isThereBlockInterference(isBox[1], 'right')) {
+                return sounds.forbidden.play();
+            } else {
+                moveBox(isBox[1], 'right');
+                playerPos.col += 1;
+                return sounds.step.play();
+            }
         }
-
         playerPos.col += 1;
         sounds.step.play();
     }  else if (keyCode === ESCAPE) {
@@ -190,10 +211,16 @@ function objectAhead(rowCord, colCord, direction, objectToFind) {
     return headingToObject;
 }
 
+// Determine wether the box is able to move into the desired direction or not
+function isThereBlockInterference(boxIndex, direction) {
+    const boxCords = boxesQuadrilles[boxIndex][1];
+    return objectAhead(boxCords[1], boxCords[0], direction, 'wall')[0] || objectAhead(boxCords[1], boxCords[0], direction, 'box')[0];
+}
+
 // Function to move a box across the map
 function moveBox(boxIndex, direction) {
     const boxCords = boxesQuadrilles[boxIndex][1];
-    
+
     // Object to define the box's destiny cell based on the direction
     const dirInstructions = {
         'up': { rowFinalCord: boxCords[1]-1, colFinalCord: boxCords[0] },
@@ -205,9 +232,5 @@ function moveBox(boxIndex, direction) {
     // Define the coordinate the box shall move towards
     const boxDestinyCell = [ dirInstructions[direction].rowFinalCord, dirInstructions[direction].colFinalCord ];
 
-    const interference = objectAhead(boxCords[0], boxCords[1], direction, 'box')[0] || objectAhead(boxCords[0], boxCords[1], direction, 'wall')[0];
-
-    if (!interference) {
-        boxesQuadrilles[boxIndex][1] = [ boxDestinyCell[1], boxDestinyCell[0] ];
-    }
+    boxesQuadrilles[boxIndex][1] = [ boxDestinyCell[1], boxDestinyCell[0] ];
 }
