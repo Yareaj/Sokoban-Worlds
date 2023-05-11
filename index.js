@@ -13,6 +13,9 @@ const renderBlocks = [ targetQuadrilles, boxesQuadrilles  ];
 let levelMap, playerQuad;
 const playerPos = { row: 2, col: 2 };
 
+// Defining control variables
+let placedTargets = 0, levelPass = false;
+
 // Redefine global variables for customization
 Quadrille.CELL_LENGTH = 50;
 Quadrille.OUTLINE_WEIGHT = 0;
@@ -37,7 +40,8 @@ function preload() {
     sounds = {
         step: loadSound('./assets/sounds/step.wav'),
         success: loadSound('./assets/sounds/success.wav'),
-        forbidden: loadSound('./assets/sounds/forbidden.wav')
+        forbidden: loadSound('./assets/sounds/forbidden.wav'),
+        levelUp: loadSound('./assets/sounds/levelUp.wav')
     }
 }
 
@@ -63,8 +67,8 @@ function setup() {
         }
     }
 
-    targetQuadrilles[0] = [ createQuadrille([ images.blocks.boxTarget ]), [ 6, 7 ]];
-    targetQuadrilles[1] = [ createQuadrille([ images.blocks.boxTarget ]), [ 3, 4 ]];
+    targetQuadrilles[0] = [ createQuadrille([ images.blocks.boxTarget ]), [ 6, 7 ], false ];
+    targetQuadrilles[1] = [ createQuadrille([ images.blocks.boxTarget ]), [ 3, 4 ], false ];
     boxesQuadrilles[0] = [ createQuadrille([ images.blocks.box ]), [ 3, 2 ] ];
     boxesQuadrilles[1] = [ createQuadrille([ images.blocks.box ]), [ 3, 5 ] ];
 }
@@ -89,10 +93,20 @@ function draw() {
         outline: 'green'
     });
 
+    // Stop game execution upon finishing the level
+    if (levelPass) {
+        fill('rgb(0,255,0)');
+        text('YOU PASSED THIS LEVEL DUDE', 100, 100);   
+    }
 }
 
 // Actions based upon the key pressed
 function keyPressed() {
+    // Prevent keys to take effects upon level pass
+    if (levelPass) {
+        return;
+    }
+
     if (keyCode === UP_ARROW || key === 'w') {
         playerMove('up');
     } else if (keyCode === DOWN_ARROW || key === 's') {
@@ -189,7 +203,6 @@ function playerMove(direction) {
             } else if (direction == 'right') {
                 playerPos.col += 1;
             }
-
             return sounds.step.play();
         }
     }
@@ -204,7 +217,7 @@ function playerMove(direction) {
         playerPos.col += 1;
     }
 
-    sounds.step.play();    
+    sounds.step.play();
 }
 
 // Function to determine wether a box is over a target and update it's skin
@@ -219,4 +232,9 @@ function boxOnTarget(boxIndex) {
     } else {
         box[0]._memory2D[0][0] = images.blocks.box;
     }
+
+    // Count the boxes that are placed on a target
+    const placedBoxes = boxesQuadrilles.filter(box => box[0].read(0,0) == images.blocks.boxSecured);
+    placedTargets = placedBoxes.length;
+    levelPass = targetQuadrilles.length == placedTargets;
 }
