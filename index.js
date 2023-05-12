@@ -1,17 +1,13 @@
-// Game board size
-const columns = 10, rows = 10;
-
 // Definition of asset objects
 let images, sounds;
 
 // Creation of box+targets storage array
-const boxesQuadrilles = [];
-const targetQuadrilles = [];
+const boxesQuadrilles = [], targetQuadrilles = [];
 const renderBlocks = [ targetQuadrilles, boxesQuadrilles  ];
 
 // Definition of quadrilles for scope to reach all functions
 let levelMap, playerQuad;
-const playerPos = { row: 2, col: 2 };
+const playerPos = {};
 
 // Defining control variables
 let placedTargets = 0, levelPass = false;
@@ -19,6 +15,22 @@ let placedTargets = 0, levelPass = false;
 // Redefine global variables for customization
 Quadrille.CELL_LENGTH = 50;
 Quadrille.OUTLINE_WEIGHT = 0;
+
+const mapOutline = `wwwwwwwwww
+wffffffffw
+wfffpffffw
+wfbfffbffw
+wffffffffw
+wwwwfffffw
+wffftfwffw
+wfffffwffw
+wfftffwffw
+wwwwwwwwww`.split('\n');
+
+// Game board size
+const columns = mapOutline[0].length, rows = mapOutline.length;
+
+let mapData2dArray;
 
 // Load assets before quadrilles initalization
 function preload() {
@@ -55,32 +67,48 @@ function setup() {
     // Creates an independent quadrille for the player
     playerQuad = createQuadrille([ images.player.up ]);
 
-    // Make all first/last columns/rows to be walls
-    for (let itRows=0; itRows<rows; itRows++) {
-        for (let itColumns=0; itColumns<columns; itColumns++) {
-            if (itRows == 0 || itRows == rows-1 || itColumns == 0 || itColumns == columns-1) {
-                levelMap._memory2D[itRows][itColumns] = images.blocks.wall;
+    // This is where the map outline is properly rendered
+    mapData2dArray = processMap(mapOutline);
+
+    // Set the map's standard
+    for (let rowIt=0; rowIt<mapData2dArray.length; rowIt++) {
+        for (let cellIt=0; cellIt<mapData2dArray[rowIt].length; cellIt++) {
+            // Set the player starting coordinates into the map
+            if (mapData2dArray[rowIt][cellIt][0] == 'p') {
+                playerPos.row = mapData2dArray[rowIt][cellIt][1][0];
+                playerPos.col = mapData2dArray[rowIt][cellIt][1][1];
+            } else if (mapData2dArray[rowIt][cellIt][0] == 'b') {
+                boxesQuadrilles.push( [ createQuadrille([ images.blocks.box ]), mapData2dArray[rowIt][cellIt][1].reverse() ] );
+            } else if (mapData2dArray[rowIt][cellIt][0] == 't') {
+                targetQuadrilles.push( [ createQuadrille([ images.blocks.boxTarget ]), mapData2dArray[rowIt][cellIt][1].reverse() ] );
+            } 
+            
+            // Set all cells but walls to be the background color
+            if (mapData2dArray[rowIt][cellIt][0] == 'w') {
+                levelMap._memory2D[rowIt][cellIt] = images.blocks.wall;
             } else {
-                levelMap._memory2D[itRows][itColumns] = color('#2f4f4f');
+                levelMap._memory2D[rowIt][cellIt] = color('#2f4f4f');
             }
         }
     }
 
-    targetQuadrilles[0] = [ createQuadrille([ images.blocks.boxTarget ]), [ 6, 7 ], false ];
-    targetQuadrilles[1] = [ createQuadrille([ images.blocks.boxTarget ]), [ 3, 4 ], false ];
-    boxesQuadrilles[0] = [ createQuadrille([ images.blocks.box ]), [ 3, 2 ] ];
-    boxesQuadrilles[1] = [ createQuadrille([ images.blocks.box ]), [ 3, 5 ] ];
+    // Render all targets and then render all boxes
+    for (let arrayBlockIt=0; arrayBlockIt<renderBlocks.length; arrayBlockIt++) {
+        for (let singleIt=0; singleIt<renderBlocks[arrayBlockIt].length; singleIt++) {
+            //console.log(renderBlocks[arrayBlockIt][singleIt][0]);
+        }
+    }
 }
 
 function draw() {
     drawQuadrille(levelMap);
 
-    // Render all targets first and then render their respective blocks, both stored in [renderBlocks]
-    for (let blockTypeIt=0; blockTypeIt<renderBlocks[0].length; blockTypeIt++) {
-        for (let indBlockIt=0; indBlockIt<renderBlocks.length; indBlockIt++) {
-            drawQuadrille(renderBlocks[blockTypeIt][indBlockIt][0], {
-                x: renderBlocks[blockTypeIt][indBlockIt][1][0] * Quadrille.CELL_LENGTH,
-                y: renderBlocks[blockTypeIt][indBlockIt][1][1] * Quadrille.CELL_LENGTH,
+    // Render all targets and then render all boxes
+    for (let arrayBlockIt=0; arrayBlockIt<renderBlocks.length; arrayBlockIt++) {
+        for (let singleIt=0; singleIt<renderBlocks[arrayBlockIt].length; singleIt++) {
+            drawQuadrille(renderBlocks[arrayBlockIt][singleIt][0], {
+                x: renderBlocks[arrayBlockIt][singleIt][1][0] * Quadrille.CELL_LENGTH,
+                y: renderBlocks[arrayBlockIt][singleIt][1][1] * Quadrille.CELL_LENGTH,
             });
         }
     }
@@ -95,7 +123,8 @@ function draw() {
     // Stop game execution upon finishing the level
     if (levelPass) {
         fill('rgb(0,255,0)');
-        text('YOU PASSED THIS LEVEL DUDE', 100, 100);   
+        textSize(30);
+        text('YOU PASSED THIS LEVEL DUDE', 25, 40);
     }
 }
 
@@ -236,4 +265,32 @@ function boxOnTarget(boxIndex) {
     const placedBoxes = boxesQuadrilles.filter(box => box[0].read(0,0) == images.blocks.boxSecured);
     placedTargets = placedBoxes.length;
     levelPass = targetQuadrilles.length == placedTargets;
+}
+
+// Function to process a string into a map
+function processMap(mapString) {
+    let processedMap = [];
+
+    mapString.forEach(row => {
+        processedMap.push(row.split(''));
+    });
+
+    // Loop to replace the map outline into something we can use!
+    for (let rowExpl=0; rowExpl<processedMap.length; rowExpl++) {
+        // Go through each cell and replace it with the needed properties for the builder
+        for (let cellExpl=0; cellExpl<processedMap[rowExpl].length; cellExpl++) {
+            processedMap[rowExpl][cellExpl] = processedMap[rowExpl][cellExpl].replace(/\w/, `${processedMap[rowExpl][cellExpl]}|${rowExpl}|${cellExpl}`);
+        }
+    };
+
+    // Loop to replace the array data into a quadrille builder!
+    for (let rowExpl=0; rowExpl<processedMap.length; rowExpl++) {
+        // Go through each cell and replace it with the block!
+        for (let cellExpl=0; cellExpl<processedMap[rowExpl].length; cellExpl++) {
+            const cellData = processedMap[rowExpl][cellExpl].split('|');
+            processedMap[rowExpl][cellExpl] = [ cellData[0], [ parseInt(cellData[1]), parseInt(cellData[2]) ] ]
+        }
+    };
+
+    return processedMap;
 }
