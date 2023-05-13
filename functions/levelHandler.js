@@ -15,7 +15,7 @@ function preload() {
         }
     }
     sounds = {
-        step: loadSound('./assets/sounds/step.wav'),
+        step: loadSound('./assets/sounds/step.mp3'),
         success: loadSound('./assets/sounds/success.wav'),
         forbidden: loadSound('./assets/sounds/forbidden.wav'),
         levelUp: loadSound('./assets/sounds/levelUp.wav')
@@ -80,8 +80,6 @@ function setup() {
     menuButton.style('background-color', '#2ecc71');
     menuButton.style('border', 'none');
     menuButton.style('border-radius', '3px');
-    /* menuButton.style('border-color', '#694c39');
-    menuButton.style('border-width', '1.5px'); */
     menuButton.style('font-family', 'SyntaxBold');
     menuButton.style('font-size', '23px');
     menuButton.style('color', '#fff');
@@ -112,7 +110,7 @@ function draw() {
 
     // Stop game execution upon finishing the level and create the buttons
     if (levelPass) {
-        // Create an override screen
+        // Create screening
         fill(color(255, 255, 255, 50));
         rect(0,0, Quadrille.CELL_LENGTH*columns, Quadrille.CELL_LENGTH*rows);
         // Display the done level text
