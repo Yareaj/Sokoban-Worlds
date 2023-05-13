@@ -1,5 +1,3 @@
-let menuButton, avertaFont;
-
 // Load assets before quadrilles initalization
 function preload() {
     images = {
@@ -66,13 +64,30 @@ function setup() {
         }
     }
 
+    menuButtonData = {
+        position: {
+            x: ((Quadrille.CELL_LENGTH*rows)/2)-(Quadrille.CELL_LENGTH),
+            y: ((Quadrille.CELL_LENGTH*columns)/2)-(Quadrille.CELL_LENGTH*0.25)
+        },
+        size: {
+            width: (Quadrille.CELL_LENGTH*2)-(Quadrille.CELL_LENGTH/10),
+            height: (Quadrille.CELL_LENGTH*0.75)-(Quadrille.CELL_LENGTH/10)
+        }
+    }
+    
     // Set up the menu button and style it
     menuButton = createButton('Menu');
-    menuButton.style('background-color', '#28b162');
+    menuButton.style('background-color', '#2ecc71');
     menuButton.style('border', 'none');
     menuButton.style('border-radius', '3px');
-    menuButton.style('font-family', 'Averta');
-    // menuButton.hide()
+    /* menuButton.style('border-color', '#694c39');
+    menuButton.style('border-width', '1.5px'); */
+    menuButton.style('font-family', 'SyntaxBold');
+    menuButton.style('font-size', '23px');
+    menuButton.style('color', '#fff');
+    menuButton.position(menuButtonData.position.x, menuButtonData.position.y);
+    menuButton.size(menuButtonData.size.width, menuButtonData.size.height);
+    menuButton.hide()
 }
 
 function draw() {
@@ -97,8 +112,15 @@ function draw() {
 
     // Stop game execution upon finishing the level and create the buttons
     if (levelPass) {
-        fill('rgb(0,255,0)');
-        textSize(30);
-        text('YOU PASSED THIS LEVEL DUDE', 25, 40);
+        // Create an override screen
+        fill(color(255, 255, 255, 50));
+        rect(0,0, Quadrille.CELL_LENGTH*columns, Quadrille.CELL_LENGTH*rows);
+        // Display the done level text
+        textFont('SyntaxBold');
+        textSize(40);
+        fill('#000');
+        text('Level Passed', menuButtonData.position.x-(textWidth('Level Passed')/3.5), menuButtonData.position.y-menuButtonData.size.height);
+        // Show the menu button
+        menuButton.show();
     }
 }
