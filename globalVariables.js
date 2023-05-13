@@ -10,7 +10,7 @@ let levelMap, playerQuad, mapData2dArray;
 const playerPos = {};
 
 // Defining control variables
-let placedTargets = 0, levelPass = false;
+let placedTargets = 0, levelPass = false, successAudio = true;
 
 // Redefine global variables for customization
 Quadrille.CELL_LENGTH = 50;

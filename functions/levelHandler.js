@@ -15,10 +15,11 @@ function preload() {
         }
     }
     sounds = {
-        step: loadSound('./assets/sounds/step.mp3'),
+        step: loadSound('./assets/sounds/step.wav'),
         success: loadSound('./assets/sounds/success.wav'),
         forbidden: loadSound('./assets/sounds/forbidden.wav'),
-        levelUp: loadSound('./assets/sounds/levelUp.wav')
+        levelUp: loadSound('./assets/sounds/levelUp.wav'),
+        powerUp: loadSound('./assets/sounds/powerUp.wav')
     }
 
     // Import the button's fonts into the project
@@ -120,5 +121,11 @@ function draw() {
         text('Level Passed', menuButtonData.position.x-(textWidth('Level Passed')/3.5), menuButtonData.position.y-menuButtonData.size.height);
         // Show the menu button
         menuButton.show();
+
+        // Reproduce levelUp audio and make sure it only happens once
+        if (successAudio) {
+            sounds.levelUp.play();
+            successAudio = false;
+        }
     }
 }
