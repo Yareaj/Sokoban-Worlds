@@ -6,3 +6,12 @@
  * https://freesound.org/people/EVRetro/sounds/535840/ (levelup)
  * https://freesound.org/people/EVRetro/sounds/501102/ (footsteps)
  */
+
+function setup() {
+
+}
+
+function draw() {
+    createCanvas(500, 500);
+    background('#6f6f')
+}

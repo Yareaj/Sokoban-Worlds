@@ -43,3 +43,7 @@ function processMap(mapString) {
 
     return processedMap;
 }
+
+function generateMenu() {
+    window.location.href = "./menu.html";
+}

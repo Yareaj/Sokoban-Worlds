@@ -87,6 +87,7 @@ function setup() {
     menuButton.position(menuButtonData.position.x, menuButtonData.position.y);
     menuButton.size(menuButtonData.size.width, menuButtonData.size.height);
     menuButton.hide()
+    menuButton.mousePressed(generateMenu);
 }
 
 function draw() {
