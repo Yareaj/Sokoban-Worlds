@@ -124,8 +124,11 @@ function draw() {
 
         // Reproduce levelUp audio and make sure it only happens once
         if (successAudio) {
-            sounds.levelUp.play();
             successAudio = false;
+            // To prevent audios overlapping, wait 0.35 seconds before playing levelUp.wav
+            setTimeout(()=> {
+                sounds.levelUp.play();
+            }, 350);
         }
     }
 }
