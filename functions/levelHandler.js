@@ -27,9 +27,16 @@ function preload() {
     loadFont('../sokoban/assets/fonts/Syntax.otf');
     loadFont('../sokoban/assets/fonts/SyntaxBlack.otf');
     loadFont('../sokoban/assets/fonts/SyntaxBold.otf');
+
+    // Import the map string into the global variable
+    mapOutline = loadStrings(`./levels/level${levelId}.txt`);
 }
 
 function setup() {
+    // Set the map's dimensions once the map has been loaded
+    columns = mapOutline[0].length
+    rows = mapOutline.length;
+
     // Adjust the canvas to the board's exact measurements
     createCanvas(Quadrille.CELL_LENGTH * columns, Quadrille.CELL_LENGTH * rows);
     background('#2f4f4f');
@@ -87,7 +94,7 @@ function setup() {
     menuButton.position(menuButtonData.position.x, menuButtonData.position.y);
     menuButton.size(menuButtonData.size.width, menuButtonData.size.height);
     menuButton.hide()
-    menuButton.mousePressed(generateMenu);
+    menuButton.mousePressed(loadLevelString);
 }
 
 function draw() {

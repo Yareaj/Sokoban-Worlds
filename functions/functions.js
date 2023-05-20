@@ -44,6 +44,33 @@ function processMap(mapString) {
     return processedMap;
 }
 
-function generateMenu() {
-    window.location.href = "./menu.html";
+// Load the new map into the global variable mapOutline
+function loadLevelString() {
+    levelId = levelId + 1;
+    // Use callback to reload the map once the string has been processed
+    mapOutline = loadStrings(`./levels/level${levelId || 1}.txt`, mapReload);
+    levelPass = false;
+}
+
+function mapReload() {
+    // Reset the level's mechanics
+    levelMap = null;
+    playerQuad = null;
+    mapData2dArray = null;
+
+    // Reset control variables
+    placedTargets = 0;
+    levelPass = false;
+    successAudio = true;
+
+    // Reset object's variebles
+    boxesQuadrilles = [];
+    targetQuadrilles = [];
+    renderBlocks = [ targetQuadrilles, boxesQuadrilles ];
+    
+    // Hide the menu button
+    menuButton.hide()
+
+    // Reload the level
+    setup();
 }
