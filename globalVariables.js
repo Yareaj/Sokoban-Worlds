@@ -24,3 +24,6 @@ let mapOutline, columns, rows;
 
 // The ID of the map to load!
 let levelId = 0;
+
+// Define the button styles
+let buttonStyles;
