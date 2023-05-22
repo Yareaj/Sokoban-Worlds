@@ -30,6 +30,9 @@ function preload() {
 
     // Import the map string into the global variable
     mapOutline = loadStrings(`./levels/level${levelId}.txt`);
+
+    // Load the buttonStyles JSON file
+    buttonStyles = loadJSON('../sokoban/assets/json/buttonStyles.json');
 }
 
 function setup() {
@@ -83,18 +86,24 @@ function setup() {
         }
     }
     
-    // Set up the menu button and style it
+    nextButton = createButton('Next');
+    nextButton.position((width/2)+textWidth('Menu')-textWidth('Next'), (height/2));
+    nextButton.hide();
+    nextButton.mousePressed(loadLevelString);
+
     menuButton = createButton('Menu');
-    menuButton.style('background-color', '#2ecc71');
-    menuButton.style('border', 'none');
-    menuButton.style('border-radius', '3px');
-    menuButton.style('font-family', 'SyntaxBold');
-    menuButton.style('font-size', '23px');
-    menuButton.style('color', '#fff');
-    menuButton.position(menuButtonData.position.x, menuButtonData.position.y);
+    menuButton.position((width/2)-textWidth('Menu')-textWidth('Next'), (height/2));
     menuButton.size(menuButtonData.size.width, menuButtonData.size.height);
-    menuButton.hide()
-    menuButton.mousePressed(loadLevelString);
+    menuButton.hide();
+    menuButton.mousePressed(toMenu);
+    
+    // Set up the buttons and style them respectively
+    const buttonPropList = Object.keys(buttonStyles);
+    for (let propIterator = 0; propIterator<buttonPropList.length ; propIterator++) {
+        const propertyName = buttonPropList[propIterator];
+        menuButton.style(propertyName, buttonStyles[propertyName]);
+        nextButton.style(propertyName, buttonStyles[propertyName]);
+    };
 }
 
 function draw() {
@@ -120,15 +129,16 @@ function draw() {
     // Stop game execution upon finishing the level and create the buttons
     if (levelPass) {
         // Create screening
-        fill(color(255, 255, 255, 50));
+        fill(color('rgba(36, 166, 91, 0.80)'));
         rect(0,0, Quadrille.CELL_LENGTH*columns, Quadrille.CELL_LENGTH*rows);
         // Display the done level text
         textFont('SyntaxBold');
         textSize(40);
         fill('#000');
         text('Level Passed', menuButtonData.position.x-(textWidth('Level Passed')/3.5), menuButtonData.position.y-menuButtonData.size.height);
-        // Show the menu button
+        // Show the menu button and next level buttons
         menuButton.show();
+        nextButton.show();
 
         // Reproduce levelUp audio and make sure it only happens once
         if (successAudio) {
