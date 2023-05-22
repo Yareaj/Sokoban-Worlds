@@ -23,16 +23,16 @@ function preload() {
     }
 
     // Import the button's fonts into the project
-    loadFont('../sokoban/assets/fonts/Averta.otf');
-    loadFont('../sokoban/assets/fonts/Syntax.otf');
-    loadFont('../sokoban/assets/fonts/SyntaxBlack.otf');
-    loadFont('../sokoban/assets/fonts/SyntaxBold.otf');
+    loadFont('./assets/fonts/Averta.otf');
+    loadFont('./assets/fonts/Syntax.otf');
+    loadFont('./assets/fonts/SyntaxBlack.otf');
+    loadFont('./assets/fonts/SyntaxBold.otf');
 
     // Import the map string into the global variable
     mapOutline = loadStrings(`./levels/level${levelId}.txt`);
 
     // Load the buttonStyles JSON file
-    buttonStyles = loadJSON('../sokoban/assets/json/buttonStyles.json');
+    buttonStyles = loadJSON('./assets/json/buttonStyles.json');
 }
 
 function setup() {
