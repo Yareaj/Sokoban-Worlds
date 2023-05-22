@@ -6,6 +6,7 @@ let head;
  * https://sfxr.me/ (forbidden + levelUp)
  * https://freesound.org/people/EVRetro/sounds/535840/ (levelup)
  * https://freesound.org/people/EVRetro/sounds/501102/ (footsteps)
+ * https://fonts.google.com/specimen/Fredoka + https://github.com/krzysu
  */
 
 function preload() {
