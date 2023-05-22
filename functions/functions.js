@@ -68,9 +68,14 @@ function mapReload() {
     targetQuadrilles = [];
     renderBlocks = [ targetQuadrilles, boxesQuadrilles ];
     
-    // Hide the menu button
+    // Hide the buttons
     menuButton.hide()
+    nextButton.hide()
 
     // Reload the level
     setup();
+}
+
+function toMenu() {
+    window.location.href = "./menu.html";
 }
