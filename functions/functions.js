@@ -48,7 +48,7 @@ function processMap(mapString) {
 function loadLevelString() {
     levelId = levelId + 1;
     // Use callback to reload the map once the string has been processed
-    mapOutline = loadStrings(`./assets/levels/level${levelId || 1}.txt`, mapReload);
+    mapOutline = loadStrings(`./levels/level${levelId || 1}.txt`, mapReload);
     levelPass = false;
 }
 
