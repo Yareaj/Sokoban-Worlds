@@ -7,7 +7,7 @@ let head;
 
 function preload() {
     head = loadImage('./assets/player/head.png');
-    loadFont('./assets/fonts/SyntaxBlack.otf');
+    loadFont('../sokoban/assets/fonts/SyntaxBlack.otf');
 }
 
 function setup() {
