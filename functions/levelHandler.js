@@ -29,7 +29,7 @@ function preload() {
     loadFont('./assets/fonts/SyntaxBold.otf');
 
     // Import the map string into the global variable
-    mapOutline = loadStrings(`./levels/level${levelId}.txt`);
+    mapOutline = loadStrings(`./assets/levels/level${levelId}.txt`);
 
     // Load the buttonStyles JSON file
     buttonStyles = loadJSON('./assets/json/buttonStyles.json');
