@@ -74,17 +74,6 @@ function setup() {
             }
         }
     }
-
-    menuButtonData = {
-        position: {
-            x: ((Quadrille.CELL_LENGTH*rows)/2)-(Quadrille.CELL_LENGTH),
-            y: ((Quadrille.CELL_LENGTH*columns)/2)-(Quadrille.CELL_LENGTH*0.25)
-        },
-        size: {
-            width: (Quadrille.CELL_LENGTH*2)-(Quadrille.CELL_LENGTH/10),
-            height: (Quadrille.CELL_LENGTH*0.75)-(Quadrille.CELL_LENGTH/10)
-        }
-    }
     
     nextButton = createButton('Next');
     nextButton.position((width/2)+textWidth('Menu')-textWidth('Next'), (height/2));
@@ -92,8 +81,7 @@ function setup() {
     nextButton.mousePressed(loadLevelString);
 
     menuButton = createButton('Menu');
-    menuButton.position((width/2)-textWidth('Menu')-textWidth('Next'), (height/2));
-    menuButton.size(menuButtonData.size.width, menuButtonData.size.height);
+    menuButton.position((width/2)-textWidth('Menu')-textWidth('Next')-20, (height/2));
     menuButton.hide();
     menuButton.mousePressed(toMenu);
     
@@ -135,7 +123,7 @@ function draw() {
         textFont('SyntaxBold');
         textSize(40);
         fill('#000');
-        text('Level Passed', menuButtonData.position.x-(textWidth('Level Passed')/3.5), menuButtonData.position.y-menuButtonData.size.height);
+        text('Level Passed', menuButton.x-(textWidth('Level Passed')/5), menuButton.y-menuButton.height*1);
         // Show the menu button and next level buttons
         menuButton.show();
         nextButton.show();
