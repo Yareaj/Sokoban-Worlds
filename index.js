@@ -1,9 +1,4 @@
 let head;
-/**
- * Some sources to include upon the credits
- * https://allbestfonts.com/ (fonts)
- * https://fonts.google.com/specimen/Fredoka
- */
 
 function preload() {
     head = loadImage('./assets/player/head.png');

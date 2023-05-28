@@ -10,3 +10,4 @@ A JavaScript implementation of the 🎮 [Sokoban](https://en.wikipedia.org/wiki/
 - All of the game's image assets were retrieved from [Kenney.nl](https://kenney.nl/assets/sokoban)
 - The original level processor and map format was based on [csixteen](https://github.com/csixteen/sokoban)'s implementation of Sokoban (`Thanks for the help Pedro :)`)
 - The idea of implementing the [Sokoban Level Format](http://sokobano.de/wiki/index.php?title=Level_format), as well as taking the Fredoka font was implemented based on [krzysu](https://github.com/krzysu/elm-sokoban-player)'s implementation of Sokoban
+- The [Fredoka fonts](./assets/fonts/) were taken from [Google Fonts](https://fonts.google.com/specimen/Fredoka)
