@@ -16,9 +16,6 @@ let placedTargets = 0, levelPass = false, successAudio = true;
 Quadrille.CELL_LENGTH = 50;
 Quadrille.OUTLINE_WEIGHT = 0;
 
-// Definition of the buttons' data objects
-let menuButton, menuButtonData;
-
 // Definition of the map and it's dimensions
 let mapOutline, columns, rows;
 
@@ -27,3 +24,6 @@ let levelId = 0;
 
 // Define the button styles
 let buttonStyles;
+
+// Define the step counter variable
+let stepsTaken = 0;

@@ -55,3 +55,12 @@ function boxOnTarget(boxIndex) {
     placedTargets = placedBoxes.length;
     levelPass = targetQuadrilles.length == placedTargets;
 }
+
+// Function to iterate and apply styles to a given object
+function applyStyles(object, jsonStyles) {
+    const objectPropList = Object.keys(jsonStyles);
+    for (let propIterator = 0; propIterator<objectPropList.length ; propIterator++) {
+        const propertyName = objectPropList[propIterator];
+        object.style(propertyName, jsonStyles[propertyName]);
+    };
+}

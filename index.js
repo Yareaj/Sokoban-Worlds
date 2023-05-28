@@ -7,7 +7,7 @@ let head;
 
 function preload() {
     head = loadImage('./assets/player/head.png');
-    loadFont('./assets/fonts/SyntaxBlack.otf');
+    loadFont('./assets/fonts/Fredoka-Medium.ttf');
 }
 
 function setup() {
@@ -18,7 +18,7 @@ function draw() {
     background('#6f6f');
     image(head, 0, 0);
 
-    textFont('SyntaxBlack');
+    textFont('Fredoka-Medium');
     textSize(40);
     fill('#000');
     const w = textWidth('Sokoban Worlds');

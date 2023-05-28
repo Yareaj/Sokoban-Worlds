@@ -60,6 +60,7 @@ function mapReload() {
 
     // Reset control variables
     placedTargets = 0;
+    stepsTaken = 0;
     levelPass = false;
     successAudio = true;
 
