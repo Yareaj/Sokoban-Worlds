@@ -56,18 +56,29 @@ function setup() {
     // Set the map's standard
     for (let rowIt=0; rowIt<mapData2dArray.length; rowIt++) {
         for (let cellIt=0; cellIt<mapData2dArray[rowIt].length; cellIt++) {
+            const cellData = mapData2dArray[rowIt][cellIt];
+
             // Set the player starting coordinates into the map
-            if (mapData2dArray[rowIt][cellIt][0] == 'p') {
-                playerPos.row = mapData2dArray[rowIt][cellIt][1][0];
-                playerPos.col = mapData2dArray[rowIt][cellIt][1][1];
-            } else if (mapData2dArray[rowIt][cellIt][0] == 'b') {
-                boxesQuadrilles.push( [ createQuadrille([ images.blocks.box ]), mapData2dArray[rowIt][cellIt][1].reverse() ] );
-            } else if (mapData2dArray[rowIt][cellIt][0] == 't') {
-                targetQuadrilles.push( [ createQuadrille([ images.blocks.boxTarget ]), mapData2dArray[rowIt][cellIt][1].reverse() ] );
+            if (cellData[0] == '@') {
+                playerPos.row = cellData[1][0];
+                playerPos.col = cellData[1][1];
+            } else if (cellData[0] == '+') {
+                // Player position definiton
+                playerPos.row = cellData[1][0];
+                playerPos.col = cellData[1][1];
+                // Create the target
+                targetQuadrilles.push( [ createQuadrille([ images.blocks.boxTarget ]), cellData[1].reverse() ] );
+            } else if (cellData[0] == '$') {
+                boxesQuadrilles.push( [ createQuadrille([ images.blocks.box ]), cellData[1].reverse() ] );
+            } else if (cellData[0] == '*') {
+                boxesQuadrilles.push( [ createQuadrille([ images.blocks.box ]), cellData[1].reverse() ] );
+                targetQuadrilles.push( [ createQuadrille([ images.blocks.boxTarget ]), cellData[1].reverse() ] );
+            } else if (cellData[0] == '.') {
+                targetQuadrilles.push( [ createQuadrille([ images.blocks.boxTarget ]), cellData[1].reverse() ] );
             } 
             
             // Set all cells but walls to be the background color
-            if (mapData2dArray[rowIt][cellIt][0] == 'w') {
+            if (cellData[0] == '#') {
                 levelMap._memory2D[rowIt][cellIt] = images.blocks.wall;
             } else {
                 levelMap._memory2D[rowIt][cellIt] = color('#2f4f4f');

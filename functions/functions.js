@@ -28,7 +28,7 @@ function processMap(mapString) {
     for (let rowExpl=0; rowExpl<processedMap.length; rowExpl++) {
         // Go through each cell and replace it with the needed properties for the builder
         for (let cellExpl=0; cellExpl<processedMap[rowExpl].length; cellExpl++) {
-            processedMap[rowExpl][cellExpl] = processedMap[rowExpl][cellExpl].replace(/\w/, `${processedMap[rowExpl][cellExpl]}|${rowExpl}|${cellExpl}`);
+            processedMap[rowExpl][cellExpl] = processedMap[rowExpl][cellExpl].replace(/./, `${processedMap[rowExpl][cellExpl]}|${rowExpl}|${cellExpl}`);
         }
     };
 
