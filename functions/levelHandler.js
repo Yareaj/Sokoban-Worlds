@@ -23,10 +23,9 @@ function preload() {
     }
 
     // Import the button's fonts into the project
-    loadFont('./assets/fonts/Averta.otf');
-    loadFont('./assets/fonts/Syntax.otf');
-    loadFont('./assets/fonts/SyntaxBlack.otf');
-    loadFont('./assets/fonts/SyntaxBold.otf');
+    loadFont('./assets/fonts/Fredoka-Bold.ttf');
+    loadFont('./assets/fonts/Fredoka-Medium.ttf');
+    loadFont('./assets/fonts/Fredoka-Regular.ttf');
 
     // Import the map string into the global variable
     mapOutline = loadStrings(`./assets/levels/level${levelId}.txt`);
@@ -97,12 +96,8 @@ function setup() {
     menuButton.mousePressed(toMenu);
     
     // Set up the buttons and style them respectively
-    const buttonPropList = Object.keys(buttonStyles);
-    for (let propIterator = 0; propIterator<buttonPropList.length ; propIterator++) {
-        const propertyName = buttonPropList[propIterator];
-        menuButton.style(propertyName, buttonStyles[propertyName]);
-        nextButton.style(propertyName, buttonStyles[propertyName]);
-    };
+    applyStyles(menuButton, buttonStyles);
+    applyStyles(nextButton, buttonStyles);
 }
 
 function draw() {
@@ -125,19 +120,29 @@ function draw() {
         outline: 'green'
     });
 
+    // Add the step counter
+    fill('#ffdeb3');
+    textFont('Fredoka-Medium');
+    textSize(Quadrille.CELL_LENGTH*0.5);
+    const xCordSteps = ((width+(Quadrille.CELL_LENGTH/2))/2)-(textWidth('Steps'));
+    text(`Steps: ${stepsTaken}`, xCordSteps, Quadrille.CELL_LENGTH/1.5);
+
     // Stop game execution upon finishing the level and create the buttons
     if (levelPass) {
         // Create screening
         fill(color('rgba(36, 166, 91, 0.80)'));
         rect(0,0, Quadrille.CELL_LENGTH*columns, Quadrille.CELL_LENGTH*rows);
         // Display the done level text
-        textFont('SyntaxBold');
+        textFont('Fredoka-Medium');
         textSize(40);
-        fill('#000');
+        fill('#4a3429');
         text('Level Passed', menuButton.x-(textWidth('Level Passed')/5), menuButton.y-menuButton.height*1);
         // Show the menu button and next level buttons
         menuButton.show();
         nextButton.show();
+        
+        textSize(23);
+        text(`Steps: ${stepsTaken}`, xCordSteps, menuButton.y+(23*2.2));
 
         // Reproduce levelUp audio and make sure it only happens once
         if (successAudio) {
