@@ -2,7 +2,7 @@ let head;
 /**
  * Some sources to include upon the credits
  * https://allbestfonts.com/ (fonts)
- * https://fonts.google.com/specimen/Fredoka + https://github.com/krzysu
+ * https://fonts.google.com/specimen/Fredoka
  */
 
 function preload() {
