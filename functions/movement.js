@@ -44,6 +44,7 @@ function playerMove(direction) {
             } else if (direction == 'right') {
                 playerPos.col += 1;
             }
+            stepsTaken += 1;
             return sounds.step.play();
         }
     }
@@ -57,6 +58,7 @@ function playerMove(direction) {
     } else if (direction == 'right') {
         playerPos.col += 1;
     }
-
+    
+    stepsTaken += 1;
     sounds.step.play();
 }
