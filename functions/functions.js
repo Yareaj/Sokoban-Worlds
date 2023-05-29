@@ -13,6 +13,10 @@ function keyPressed() {
         playerMove('left');
     } else if (keyCode === RIGHT_ARROW || key === 'd') {
         playerMove('right');
+    } else if (key === 'm') {
+        toMenu();
+    } else if (key === 'r') {
+        loadLevelString();
     }
 }
 
@@ -44,12 +48,23 @@ function processMap(mapString) {
     return processedMap;
 }
 
+// Change the level ID
+function increaseId() {
+    levelId = levelId + 1;
+}
+
 // Load the new map into the global variable mapOutline
 function loadLevelString() {
-    levelId = levelId + 1;
     // Use callback to reload the map once the string has been processed
-    mapOutline = loadStrings(`./assets/levels/level${levelId || 1}.txt`, mapReload);
+    mapOutline = loadStrings(`./assets/levels/level${levelId}.txt`, mapReload);
     levelPass = false;
+    sounds.levelAlert.play();
+}
+
+// Go to next level!
+function nextLevel() {
+    increaseId();
+    loadLevelString();
 }
 
 function mapReload() {
