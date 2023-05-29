@@ -32,7 +32,7 @@ function preload() {
     mapOutline = loadStrings(`./assets/levels/level${levelId}.txt`);
 
     // Load the buttonStyles JSON file
-    buttonStyles = loadJSON('./assets/json/buttonStyles.json');
+    buttonStyles = loadJSON('./assets/json/levelButtonStyles.json');
 }
 
 function setup() {

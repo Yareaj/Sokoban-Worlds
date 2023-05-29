@@ -1,22 +1,31 @@
-let head;
+let backgroundImage, customLevelButton, levelListButton;
 
 function preload() {
-    head = loadImage('./assets/player/head.png');
-    loadFont('./assets/fonts/Fredoka-Medium.ttf');
+    // Load assets for render
+    backgroundImage = loadImage('./assets/images/menuBg.png');
+    menuButtonStyles = loadJSON('./assets/json/menuButtonStyles.json');
+    // Load buttons' fonts
+    loadFont('./assets/fonts/Fredoka-Bold.ttf');
 }
 
 function setup() {
     createCanvas(500, 500);
+    customLevelButton = createButton('Custom Level');
+    levelListButton = createButton('Play');
 }
 
 function draw() {
-    background('#6f6f');
-    image(head, 0, 0);
+    image(backgroundImage, 0, 0);
 
-    textFont('Fredoka-Medium');
-    textSize(40);
-    fill('#000');
-    const w = textWidth('Sokoban Worlds');
-    text(w, 100, 300);
-    text('Sokoban Worlds', 80, 100);
+    // Apply styles to the menu buttons
+    applyStyles(levelListButton, menuButtonStyles);
+    applyStyles(customLevelButton, menuButtonStyles);
+
+    // Position the buttons on the screen
+    levelListButton.position(width/2.4, height/1.93);
+    customLevelButton.position(width/3.6, height/1.5);
+
+    // Add listeners for button actions
+    levelListButton.mousePressed(initiateLevelPlay);
+    customLevelButton.mousePressed(customLevelLoad);
 }
