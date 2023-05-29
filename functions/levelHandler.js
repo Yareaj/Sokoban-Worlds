@@ -128,6 +128,10 @@ function draw() {
     const xCordSteps = ((width+(Quadrille.CELL_LENGTH/2))/2)-(textWidth('Steps'));
     text(`Steps: ${stepsTaken}`, xCordSteps, Quadrille.CELL_LENGTH/1.5);
 
+    // Add a level indicator top left corner
+    textSize(10);
+    text(`Level ${levelId}`, 5, 10);
+
     // Stop game execution upon finishing the level and create the buttons
     if (levelPass) {
         // Create screening
