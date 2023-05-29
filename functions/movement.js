@@ -62,3 +62,25 @@ function playerMove(direction) {
     stepsTaken += 1;
     sounds.step.play();
 }
+
+// Actions based upon the key pressed
+function keyPressed() {
+    // Prevent keys to take effects upon level pass
+    if (levelPass) {
+        return;
+    }
+
+    if (keyCode === UP_ARROW || key === 'w') {
+        playerMove('up');
+    } else if (keyCode === DOWN_ARROW || key === 's') {
+        playerMove('down');
+    } else if (keyCode === LEFT_ARROW || key === 'a') {
+        playerMove('left');
+    } else if (keyCode === RIGHT_ARROW || key === 'd') {
+        playerMove('right');
+    } else if (key === 'm') {
+        toMenu();
+    } else if (key === 'r') {
+        loadLevelString();
+    }
+}
