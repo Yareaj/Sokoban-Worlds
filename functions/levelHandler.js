@@ -19,7 +19,8 @@ function preload() {
         success: loadSound('./assets/sounds/success.wav'),
         forbidden: loadSound('./assets/sounds/forbidden.wav'),
         levelUp: loadSound('./assets/sounds/levelUp.wav'),
-        powerUp: loadSound('./assets/sounds/powerUp.wav')
+        powerUp: loadSound('./assets/sounds/powerUp.wav'),
+        levelAlert: loadSound('./assets/sounds/levelAlert.wav')
     }
 
     // Import the button's fonts into the project
@@ -44,7 +45,7 @@ function setup() {
     background('#2f4f4f');
 
     // Define the level's map dimensions
-    levelMap = createQuadrille(rows, columns);
+    levelMap = createQuadrille(columns, rows);
 
     // Creates an independent quadrille for the player
     playerQuad = createQuadrille([ images.player.up ]);
@@ -66,14 +67,14 @@ function setup() {
                 playerPos.row = cellData[1][0];
                 playerPos.col = cellData[1][1];
                 // Create the target
-                targetQuadrilles.push( [ createQuadrille([ images.blocks.boxTarget ]), cellData[1].reverse() ] );
+                targetQuadrilles.push( [ createQuadrille([ images.blocks.boxTarget ]), cellData[1].toReversed() ] );
             } else if (cellData[0] == '$') {
-                boxesQuadrilles.push( [ createQuadrille([ images.blocks.box ]), cellData[1].reverse() ] );
+                boxesQuadrilles.push( [ createQuadrille([ images.blocks.box ]), cellData[1].toReversed() ] );
             } else if (cellData[0] == '*') {
-                boxesQuadrilles.push( [ createQuadrille([ images.blocks.box ]), cellData[1].reverse() ] );
-                targetQuadrilles.push( [ createQuadrille([ images.blocks.boxTarget ]), cellData[1].reverse() ] );
+                boxesQuadrilles.push( [ createQuadrille([ images.blocks.boxSecured ]), cellData[1].toReversed() ] );
+                targetQuadrilles.push( [ createQuadrille([ images.blocks.boxTarget ]), cellData[1].toReversed() ] );
             } else if (cellData[0] == '.') {
-                targetQuadrilles.push( [ createQuadrille([ images.blocks.boxTarget ]), cellData[1].reverse() ] );
+                targetQuadrilles.push( [ createQuadrille([ images.blocks.boxTarget ]), cellData[1].toReversed() ] );
             } 
             
             // Set all cells but walls to be the background color
@@ -88,7 +89,7 @@ function setup() {
     nextButton = createButton('Next');
     nextButton.position((width/2)+textWidth('Menu')-textWidth('Next'), (height/2));
     nextButton.hide();
-    nextButton.mousePressed(loadLevelString);
+    nextButton.mousePressed(nextLevel);
 
     menuButton = createButton('Menu');
     menuButton.position((width/2)-textWidth('Menu')-textWidth('Next')-20, (height/2));
@@ -126,6 +127,10 @@ function draw() {
     textSize(Quadrille.CELL_LENGTH*0.5);
     const xCordSteps = ((width+(Quadrille.CELL_LENGTH/2))/2)-(textWidth('Steps'));
     text(`Steps: ${stepsTaken}`, xCordSteps, Quadrille.CELL_LENGTH/1.5);
+
+    // Add a level indicator top left corner
+    textSize(10);
+    text(`Level ${levelId}`, 5, 10);
 
     // Stop game execution upon finishing the level and create the buttons
     if (levelPass) {

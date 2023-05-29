@@ -13,6 +13,10 @@ function keyPressed() {
         playerMove('left');
     } else if (keyCode === RIGHT_ARROW || key === 'd') {
         playerMove('right');
+    } else if (key === 'm') {
+        toMenu();
+    } else if (key === 'r') {
+        loadLevelString();
     }
 }
 
@@ -37,19 +41,30 @@ function processMap(mapString) {
         // Go through each cell and replace it with the block!
         for (let cellExpl=0; cellExpl<processedMap[rowExpl].length; cellExpl++) {
             const cellData = processedMap[rowExpl][cellExpl].split('|');
-            processedMap[rowExpl][cellExpl] = [ cellData[0], [ parseInt(cellData[1]), parseInt(cellData[2]) ] ]
+            processedMap[rowExpl][cellExpl] = [ cellData[0], [ parseInt(cellData[1]), parseInt(cellData[2]) ] ];
         }
     };
 
     return processedMap;
 }
 
+// Change the level ID
+function increaseId() {
+    levelId = levelId + 1;
+}
+
 // Load the new map into the global variable mapOutline
 function loadLevelString() {
-    levelId = levelId + 1;
     // Use callback to reload the map once the string has been processed
-    mapOutline = loadStrings(`./assets/levels/level${levelId || 1}.txt`, mapReload);
+    mapOutline = loadStrings(`./assets/levels/level${levelId}.txt`, mapReload);
     levelPass = false;
+    sounds.levelAlert.play();
+}
+
+// Go to next level!
+function nextLevel() {
+    increaseId();
+    loadLevelString();
 }
 
 function mapReload() {
