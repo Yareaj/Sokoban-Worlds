@@ -92,6 +92,17 @@ function mapReload() {
     setup();
 }
 
+// Go to the menu
 function toMenu() {
-    window.location.href = "./menu.html";
+    window.location.href = "./index.html";
+}
+
+// Go to the level player!
+function initiateLevelPlay() {
+    window.location.href = "./play.html";
+}
+
+// Go to the custom landing page!
+function customLevelLoad() {
+    console.log('Here relies the custom level loader!');
 }

@@ -23,7 +23,7 @@ let mapOutline, columns, rows;
 let levelId = 0;
 
 // Define the button styles
-let buttonStyles;
+let levelButtonStyles, menuButtonStyles;
 
 // Define the step counter variable
 let stepsTaken = 0;
