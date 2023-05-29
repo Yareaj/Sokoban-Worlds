@@ -70,7 +70,7 @@ function setup() {
             } else if (cellData[0] == '$') {
                 boxesQuadrilles.push( [ createQuadrille([ images.blocks.box ]), cellData[1].reverse() ] );
             } else if (cellData[0] == '*') {
-                boxesQuadrilles.push( [ createQuadrille([ images.blocks.box ]), cellData[1].reverse() ] );
+                boxesQuadrilles.push( [ createQuadrille([ images.blocks.boxSecured ]), cellData[1].reverse() ] );
                 targetQuadrilles.push( [ createQuadrille([ images.blocks.boxTarget ]), cellData[1].reverse() ] );
             } else if (cellData[0] == '.') {
                 targetQuadrilles.push( [ createQuadrille([ images.blocks.boxTarget ]), cellData[1].reverse() ] );
