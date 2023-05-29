@@ -12,11 +12,7 @@ function setup() {
     createCanvas(500, 500);
     customLevelButton = createButton('Custom Level');
     levelListButton = createButton('Play');
-}
-
-function draw() {
-    image(backgroundImage, 0, 0);
-
+    
     // Apply styles to the menu buttons
     applyStyles(levelListButton, menuButtonStyles);
     applyStyles(customLevelButton, menuButtonStyles);
@@ -27,5 +23,9 @@ function draw() {
 
     // Add listeners for button actions
     levelListButton.mousePressed(initiateLevelPlay);
-    customLevelButton.mousePressed(customLevelLoad);
+    customLevelButton.mousePressed(toCustom);
+}
+
+function draw() {
+    image(backgroundImage, 0, 0);
 }
