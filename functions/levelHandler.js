@@ -28,9 +28,16 @@ function preload() {
     loadFont('./assets/fonts/Fredoka-Medium.ttf');
     loadFont('./assets/fonts/Fredoka-Regular.ttf');
 
-    // Import the map string into the global variable
-    mapOutline = loadStrings(`./assets/levels/level${levelId}.txt`);
+    const referrer = document.referrer.split('/')
+    const lastReference = referrer[referrer.length-1];
 
+    // Import the map string into the global variable
+    if (lastReference == 'custom.html') {
+        mapOutline = localStorage.getItem("mapId").split('\n');
+    } else {
+        mapOutline = loadStrings(`./assets/levels/level${levelId}.txt`);
+    }
+    
     // Load the buttonStyles JSON file
     buttonStyles = loadJSON('./assets/json/levelButtonStyles.json');
 }

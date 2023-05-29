@@ -20,13 +20,12 @@ function setup() {
     textArea.style('width', `${width-50}px`);
     textArea.style('height', `${height/3}px`);
     textArea.style('resize', 'none');
-    textArea.attribute('placeholder', 'Insert the menu data');
+    textArea.attribute('placeholder', 'Insert the custom level data');
     textArea.attribute('required', true);
     textArea.position(30, height/1.97);
 
     // Position the submit button on the screen
     submitButton.position(width/2.4, (height/1.95)+(height/3)+20);
-
     submitButton.mousePressed(obtainLevelData);
 }
 

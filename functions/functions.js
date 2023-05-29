@@ -33,5 +33,11 @@ function toCustom() {
 }
 
 function obtainLevelData() {
-    console.log(textArea.value());
+    customLevelString = textArea.value();
+
+    if (!customLevelString) {
+        return alert('Please insert level data');
+    }
+    localStorage.setItem("mapId", customLevelString);
+    initiateLevelPlay();
 }
