@@ -45,7 +45,7 @@ function setup() {
     background('#2f4f4f');
 
     // Define the level's map dimensions
-    levelMap = createQuadrille(rows, columns);
+    levelMap = createQuadrille(columns, rows);
 
     // Creates an independent quadrille for the player
     playerQuad = createQuadrille([ images.player.up ]);
@@ -67,14 +67,14 @@ function setup() {
                 playerPos.row = cellData[1][0];
                 playerPos.col = cellData[1][1];
                 // Create the target
-                targetQuadrilles.push( [ createQuadrille([ images.blocks.boxTarget ]), cellData[1].reverse() ] );
+                targetQuadrilles.push( [ createQuadrille([ images.blocks.boxTarget ]), cellData[1].toReversed() ] );
             } else if (cellData[0] == '$') {
-                boxesQuadrilles.push( [ createQuadrille([ images.blocks.box ]), cellData[1].reverse() ] );
+                boxesQuadrilles.push( [ createQuadrille([ images.blocks.box ]), cellData[1].toReversed() ] );
             } else if (cellData[0] == '*') {
-                boxesQuadrilles.push( [ createQuadrille([ images.blocks.boxSecured ]), cellData[1].reverse() ] );
-                targetQuadrilles.push( [ createQuadrille([ images.blocks.boxTarget ]), cellData[1].reverse() ] );
+                boxesQuadrilles.push( [ createQuadrille([ images.blocks.boxSecured ]), cellData[1].toReversed() ] );
+                targetQuadrilles.push( [ createQuadrille([ images.blocks.boxTarget ]), cellData[1].toReversed() ] );
             } else if (cellData[0] == '.') {
-                targetQuadrilles.push( [ createQuadrille([ images.blocks.boxTarget ]), cellData[1].reverse() ] );
+                targetQuadrilles.push( [ createQuadrille([ images.blocks.boxTarget ]), cellData[1].toReversed() ] );
             } 
             
             // Set all cells but walls to be the background color

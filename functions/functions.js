@@ -41,7 +41,7 @@ function processMap(mapString) {
         // Go through each cell and replace it with the block!
         for (let cellExpl=0; cellExpl<processedMap[rowExpl].length; cellExpl++) {
             const cellData = processedMap[rowExpl][cellExpl].split('|');
-            processedMap[rowExpl][cellExpl] = [ cellData[0], [ parseInt(cellData[1]), parseInt(cellData[2]) ] ]
+            processedMap[rowExpl][cellExpl] = [ cellData[0], [ parseInt(cellData[1]), parseInt(cellData[2]) ] ];
         }
     };
 
