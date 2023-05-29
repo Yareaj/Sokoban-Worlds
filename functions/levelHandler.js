@@ -19,7 +19,8 @@ function preload() {
         success: loadSound('./assets/sounds/success.wav'),
         forbidden: loadSound('./assets/sounds/forbidden.wav'),
         levelUp: loadSound('./assets/sounds/levelUp.wav'),
-        powerUp: loadSound('./assets/sounds/powerUp.wav')
+        powerUp: loadSound('./assets/sounds/powerUp.wav'),
+        levelAlert: loadSound('./assets/sounds/levelAlert.wav')
     }
 
     // Import the button's fonts into the project
@@ -88,7 +89,7 @@ function setup() {
     nextButton = createButton('Next');
     nextButton.position((width/2)+textWidth('Menu')-textWidth('Next'), (height/2));
     nextButton.hide();
-    nextButton.mousePressed(loadLevelString);
+    nextButton.mousePressed(nextLevel);
 
     menuButton = createButton('Menu');
     menuButton.position((width/2)-textWidth('Menu')-textWidth('Next')-20, (height/2));
