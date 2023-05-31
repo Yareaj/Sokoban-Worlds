@@ -67,14 +67,14 @@ function renderFullMapQuadrilles() {
                 playerPos.row = cellData[1][0];
                 playerPos.col = cellData[1][1];
                 // Create the target
-                targetQuadrilles.push( [ createQuadrille([ images.blocks.boxTarget ]), cellData[1].toReversed() ] );
+                targetQuadrilles.push( [ createQuadrille([ images.blocks.boxTarget ]), cellData[1].reverse() ] );
             } else if (cellData[0] == '$') {
-                boxesQuadrilles.push( [ createQuadrille([ images.blocks.box ]), cellData[1].toReversed() ] );
+                boxesQuadrilles.push( [ createQuadrille([ images.blocks.box ]), cellData[1].reverse() ] );
             } else if (cellData[0] == '*') {
-                boxesQuadrilles.push( [ createQuadrille([ images.blocks.boxSecured ]), cellData[1].toReversed() ] );
-                targetQuadrilles.push( [ createQuadrille([ images.blocks.boxTarget ]), cellData[1].toReversed() ] );
+                boxesQuadrilles.push( [ createQuadrille([ images.blocks.boxSecured ]), cellData[1].reverse() ] );
+                targetQuadrilles.push( [ createQuadrille([ images.blocks.boxTarget ]), cellData[1].reverse() ] );
             } else if (cellData[0] == '.') {
-                targetQuadrilles.push( [ createQuadrille([ images.blocks.boxTarget ]), cellData[1].toReversed() ] );
+                targetQuadrilles.push( [ createQuadrille([ images.blocks.boxTarget ]), cellData[1].reverse() ] );
             } 
             
             // Set all cells but walls to be the background color
