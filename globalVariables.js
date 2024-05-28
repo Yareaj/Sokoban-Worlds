@@ -13,8 +13,8 @@ const playerPos = {};
 let placedTargets = 0, levelPass = false, successAudio = true;
 
 // Redefine global variables for customization
-Quadrille.CELL_LENGTH = 50;
-Quadrille.OUTLINE_WEIGHT = 0;
+Quadrille.cellLength = 50;
+Quadrille.outlineWeight = 0;
 
 // Definition of the map and it's dimensions
 let mapOutline, columns, rows;

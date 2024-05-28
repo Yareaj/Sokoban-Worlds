@@ -48,7 +48,7 @@ function setup() {
     rows = mapOutline.length;
 
     // Adjust the canvas to the board's exact measurements
-    createCanvas(Quadrille.CELL_LENGTH * columns, Quadrille.CELL_LENGTH * rows);
+    createCanvas(Quadrille.cellLength * columns, Quadrille.cellLength * rows);
     background('#2f4f4f');
 
     // Define the level's map dimensions
@@ -85,25 +85,25 @@ function draw() {
     for (let arrayBlockIt=0; arrayBlockIt<renderBlocks.length; arrayBlockIt++) {
         for (let singleIt=0; singleIt<renderBlocks[arrayBlockIt].length; singleIt++) {
             drawQuadrille(renderBlocks[arrayBlockIt][singleIt][0], {
-                x: renderBlocks[arrayBlockIt][singleIt][1][0] * Quadrille.CELL_LENGTH,
-                y: renderBlocks[arrayBlockIt][singleIt][1][1] * Quadrille.CELL_LENGTH
+                x: renderBlocks[arrayBlockIt][singleIt][1][0] * Quadrille.cellLength,
+                y: renderBlocks[arrayBlockIt][singleIt][1][1] * Quadrille.cellLength
             });
         }
     }
 
     // Insert the player onto the main quadrille given a specific position
     drawQuadrille(playerQuad, {
-        x: playerPos.col * Quadrille.CELL_LENGTH,
-        y: playerPos.row * Quadrille.CELL_LENGTH,
+        x: playerPos.col * Quadrille.cellLength,
+        y: playerPos.row * Quadrille.cellLength,
         outline: 'green'
     });
 
     // Add the step counter
     fill('#ffdeb3');
     textFont('Fredoka-Medium');
-    textSize(Quadrille.CELL_LENGTH*0.5);
-    const xCordSteps = ((width+(Quadrille.CELL_LENGTH/2))/2)-(textWidth('Steps'));
-    text(`Steps: ${stepsTaken}`, xCordSteps, Quadrille.CELL_LENGTH/1.5);
+    textSize(Quadrille.cellLength*0.5);
+    const xCordSteps = ((width+(Quadrille.cellLength/2))/2)-(textWidth('Steps'));
+    text(`Steps: ${stepsTaken}`, xCordSteps, Quadrille.cellLength/1.5);
 
     // Add a level indicator top left corner
     textSize(10);
@@ -113,7 +113,7 @@ function draw() {
     if (levelPass) {
         // Create screening
         fill(color('rgba(36, 166, 91, 0.80)'));
-        rect(0,0, Quadrille.CELL_LENGTH*columns, Quadrille.CELL_LENGTH*rows);
+        rect(0,0, Quadrille.cellLength*columns, Quadrille.cellLength*rows);
         // Display the done level text
         textFont('Fredoka-Medium');
         textSize(40);
